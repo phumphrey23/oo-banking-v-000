@@ -16,6 +16,7 @@ class Transfer
     if @amount < @sender.balance && @status = "pending" && self.valid?
       @sender.balance -= @amount
       @receiver.balance += @amount
+      @last_transaction = @amount
       @status = "complete"
     else
       @status = "rejected"
@@ -25,8 +26,8 @@ class Transfer
 
   def reverse_transfer
     if @status = "complete"
-      @receiver.balance -= @amount
-      @sender.balance += @amount
+      @receiver.balance -= @last_transaction
+      @sender.balance += @last_transaction
       @status = "reversed"
     end
   end
